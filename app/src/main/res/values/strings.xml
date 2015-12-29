@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CoolBlog</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="blog_name">coolxuj</string>
+    <string name="type_android">Android开发</string>
+    <string name="type_home">首页</string>
+    <string name="transition_img">transition_img</string>
+    <string name="type_other">其它</string>
+    <string name="type_joke">笑话</string>
+</resources>
