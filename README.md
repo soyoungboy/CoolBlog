@@ -1,0 +1,1 @@
+![](screenshot/cool_blog.gif)
