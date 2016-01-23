@@ -14,12 +14,10 @@
             android:id="@+id/about_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="all"
             android:padding="8dp"
             android:text="@string/about_app"/>
 
         <TextView
-            android:id="@+id/about_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="all"
@@ -27,7 +25,6 @@
             android:text="@string/about_me"/>
 
         <TextView
-            android:id="@+id/from"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

@@ -23,6 +23,7 @@ import com.xuie.coolblog.mvp.presenter.BlogPresenter;
 import com.xuie.coolblog.mvp.presenter.BlogPresenterImpl;
 import com.xuie.coolblog.mvp.view.BlogView;
 import com.xuie.coolblog.mvp.view.activity.DetailActivity;
+import com.xuie.coolblog.mvp.view.activity.WebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,12 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         @Override
         public void onItemClick(View view, int position) {
             Blog blog = adapter.getItem(position);
+
+            if (type == 0 || type == 3) {
+                WebActivity.newIntent(blog.getLink());
+                return;
+            }
+
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra("blog", blog);
 

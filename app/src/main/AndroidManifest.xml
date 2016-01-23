@@ -28,6 +28,8 @@
         <activity
             android:name=".mvp.view.activity.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.view.activity.WebActivity">
+        </activity>
     </application>
 
 </manifest>
