@@ -3,13 +3,6 @@ package com.xuie.coolblog.bean;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Description : 新闻详情实体类
- * Author : lauren
- * Email  : lauren.liuling@gmail.com
- * Blog   : http://www.liuling123.com
- * Date   : 15/12/19
- */
 public class JokeDetailBean implements Serializable {
     /**
      * docid

@@ -5,19 +5,11 @@ import com.xuie.coolblog.mvp.model.BlogModel;
 import com.xuie.coolblog.mvp.model.BlogModelImpl;
 import com.xuie.coolblog.mvp.view.DetailView;
 
-/**
- * Description :
- * Author : lauren
- * Email  : lauren.liuling@gmail.com
- * Blog   : http://www.liuling123.com
- * Date   : 2015/12/21
- */
 public class JokeDetailPresenterImpl implements JokeDetailPresenter, BlogModelImpl.OnLoadDetailListener {
     private DetailView view;
     private BlogModel model;
 
-    public JokeDetailPresenterImpl(DetailView view) {
-        this.view = view;
+    public JokeDetailPresenterImpl() {
         model = new BlogModelImpl();
     }
 
@@ -40,8 +32,20 @@ public class JokeDetailPresenterImpl implements JokeDetailPresenter, BlogModelIm
     }
 
     @Override
+    public void setView(DetailView view) {
+        this.view = view;
+    }
+
+    @Override
+    public void clearView() {
+        view = null;
+    }
+
+    @Override
     public void onSuccess(JokeDetailBean jokeDetailBean) {
-        if(jokeDetailBean != null) {
+        if (view == null)
+            return;
+        if (jokeDetailBean != null) {
             view.showDetailContent(jokeDetailBean.getBody());
         }
         view.hideProgress();
@@ -49,6 +53,8 @@ public class JokeDetailPresenterImpl implements JokeDetailPresenter, BlogModelIm
 
     @Override
     public void onFailure(String msg, Exception e) {
+        if (view == null)
+            return;
         view.hideProgress();
     }
 }

@@ -1,4 +1,4 @@
-package com.xuie.coolblog.fragment;
+package com.xuie.coolblog.mvp.view.fragment;
 
 
 import android.os.Bundle;
@@ -23,9 +23,8 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
-
-    static final int TYPE_HOME = 0;
-    static final int TYPE_ANDROID = 1;
+    static final int TYPE_CSDN_WEB = 0;
+    static final int TYPE_CSDN_JSOUP = 1;
     static final int TYPE_JOKE = 2;
     static final int TYPE_OTHER = 3;
 
@@ -42,10 +41,10 @@ public class MainFragment extends Fragment {
 
         viewpager.setOffscreenPageLimit(3);
         setupViewPager(viewpager);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_home));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_android));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_csdn_web));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_csdn_jsoup));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.type_joke));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_other));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_blog));
         tabLayout.setupWithViewPager(viewpager);
         return view;
     }
@@ -53,10 +52,10 @@ public class MainFragment extends Fragment {
     private void setupViewPager(ViewPager viewpager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(BlogFragment.newInstance(TYPE_HOME), getString(R.string.type_home));
-        adapter.addFragment(BlogFragment.newInstance(TYPE_ANDROID), getString(R.string.type_android));
+        adapter.addFragment(BlogFragment.newInstance(TYPE_CSDN_WEB), getString(R.string.type_csdn_web));
+        adapter.addFragment(BlogFragment.newInstance(TYPE_CSDN_JSOUP), getString(R.string.type_csdn_jsoup));
         adapter.addFragment(BlogFragment.newInstance(TYPE_JOKE), getString(R.string.type_joke));
-        adapter.addFragment(BlogFragment.newInstance(TYPE_OTHER), getString(R.string.type_other));
+        adapter.addFragment(BlogFragment.newInstance(TYPE_OTHER), getString(R.string.type_blog));
         viewpager.setAdapter(adapter);
     }
 

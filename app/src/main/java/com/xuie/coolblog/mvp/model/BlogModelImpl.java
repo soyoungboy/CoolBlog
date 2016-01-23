@@ -1,8 +1,5 @@
 package com.xuie.coolblog.mvp.model;
 
-import android.util.Log;
-
-import com.squareup.okhttp.Request;
 import com.xuie.coolblog.R;
 import com.xuie.coolblog.bean.Blog;
 import com.xuie.coolblog.bean.JokeBean;
@@ -21,13 +18,13 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+
 /**
  * Created by xuie on 15-12-28.
  */
 public class BlogModelImpl implements BlogModel {
     static final String TAG = BlogModelImpl.class.getSimpleName();
-    static final String CSDN_SITE = "http://blog.csdn.net";
-    static final String COOL_SITE = "http://xuie0000.com";
 
     public interface OnListener {
         void onSuccess(List<Blog> list);
@@ -48,13 +45,12 @@ public class BlogModelImpl implements BlogModel {
 
     @Override
     public void load(String url, int type, final OnListener listener) {
-        Log.d("BlogModelImpl", url + ", type:" + type);
         switch (type) {
             case 0:
             case 1:
                 OkHttpUtils.get().url(url).build().execute(new StringCallback() {
                     @Override
-                    public void onError(Request request, Exception e) {
+                    public void onError(Call call, Exception e) {
                         listener.onFailure(e);
                     }
 
@@ -73,13 +69,11 @@ public class BlogModelImpl implements BlogModel {
                             // 摘要
                             String description = element.select("div.article_description").text();
 //                            System.out.println("description:" + description);
-//                            String msg = element.select("div.article_manage").text();
-//                            System.out.println("msg:" + msg);
                             // 日期
                             String date = element.getElementsByClass("article_manage").get(0).text();
 //                            System.out.println("date:" + date);
                             // 文章链接
-                            String link = CSDN_SITE + element.select("h1").select("a").attr("href");
+                            String link = Urls.CSDN_SITE + element.select("h1").select("a").attr("href");
 //                            System.out.println("link:" + link);
 
                             Blog blog = new Blog();
@@ -97,7 +91,7 @@ public class BlogModelImpl implements BlogModel {
             case 2:
                 OkHttpUtils.get().url(url).build().execute(new StringCallback() {
                     @Override
-                    public void onError(Request request, Exception e) {
+                    public void onError(Call call, Exception e) {
                         listener.onFailure(e);
                     }
 
@@ -126,8 +120,7 @@ public class BlogModelImpl implements BlogModel {
             case 3:
                 OkHttpUtils.get().url(url).build().execute(new StringCallback() {
                     @Override
-                    public void onError(Request request, Exception e) {
-                        Log.d(TAG, "1111111");
+                    public void onError(Call call, Exception e) {
                         listener.onFailure(e);
                     }
 
@@ -145,7 +138,7 @@ public class BlogModelImpl implements BlogModel {
                             // 摘要
                             String description = "";
                             // 文章链接
-                            String link = COOL_SITE + element.select("h1").select("a").attr("href");
+                            String link = Urls.COOL_SITE + element.select("h1").select("a").attr("href");
 //                            System.out.println("link:" + link);
 
                             Blog blog = new Blog();
@@ -168,7 +161,7 @@ public class BlogModelImpl implements BlogModel {
         String url = getDetailUrl(docid);
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
-            public void onError(Request request, Exception e) {
+            public void onError(Call call, Exception e) {
                 listener.onFailure("load joke detail info failure.", e);
             }
 
@@ -184,7 +177,7 @@ public class BlogModelImpl implements BlogModel {
     public void loadLink(String link, final OnLoadDetailListener listener) {
         OkHttpUtils.get().url(link).build().execute(new StringCallback() {
             @Override
-            public void onError(Request request, Exception e) {
+            public void onError(Call call, Exception e) {
                 listener.onFailure("load csdn detail info failure.", e);
             }
 
@@ -206,7 +199,7 @@ public class BlogModelImpl implements BlogModel {
     public void loadCool(String link, final OnLoadDetailListener listener) {
         OkHttpUtils.get().url(link).build().execute(new StringCallback() {
             @Override
-            public void onError(Request request, Exception e) {
+            public void onError(Call call, Exception e) {
                 listener.onFailure("load coolxuj detail info failure.", e);
             }
 

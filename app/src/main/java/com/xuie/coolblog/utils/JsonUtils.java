@@ -19,6 +19,7 @@ public class JsonUtils {
 
     /**
      * 将对象准换为json字符串
+     *
      * @param object
      * @param <T>
      * @return
@@ -29,6 +30,7 @@ public class JsonUtils {
 
     /**
      * 将json字符串转换为对象
+     *
      * @param json
      * @param clz
      * @param <T>
@@ -40,6 +42,7 @@ public class JsonUtils {
 
     /**
      * 将json对象转换为实体对象
+     *
      * @param json
      * @param clz
      * @param <T>
@@ -52,6 +55,7 @@ public class JsonUtils {
 
     /**
      * 将json字符串转换为对象
+     *
      * @param json
      * @param type
      * @param <T>
@@ -60,10 +64,6 @@ public class JsonUtils {
     public static <T> T deserialize(String json, Type type) throws JsonSyntaxException {
         return mGson.fromJson(json, type);
     }
-
-
-
-
 
 
 }

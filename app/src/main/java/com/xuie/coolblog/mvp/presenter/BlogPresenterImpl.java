@@ -15,8 +15,17 @@ public class BlogPresenterImpl implements BlogPresenter, BlogModelImpl.OnListene
     BlogModel model;
     BlogView view;
 
-    public BlogPresenterImpl(BlogView view) {
+    @Override
+    public void setView(BlogView view) {
         this.view = view;
+    }
+
+    @Override
+    public void clearView() {
+        this.view = null;
+    }
+
+    public BlogPresenterImpl() {
         this.model = new BlogModelImpl();
     }
 
@@ -47,11 +56,13 @@ public class BlogPresenterImpl implements BlogPresenter, BlogModelImpl.OnListene
 
     @Override
     public void onSuccess(List<Blog> list) {
-        view.addBlog(list);
+        if (view != null)
+            view.addBlog(list);
     }
 
     @Override
     public void onFailure(Exception e) {
-        view.addBlogFail();
+        if (view != null)
+            view.addBlogFail();
     }
 }

@@ -1,8 +1,9 @@
-package com.xuie.coolblog.fragment;
+package com.xuie.coolblog.mvp.view.fragment;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -16,12 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xuie.coolblog.R;
-import com.xuie.coolblog.activity.DetailActivity;
 import com.xuie.coolblog.adapter.BlogAdapter;
 import com.xuie.coolblog.bean.Blog;
 import com.xuie.coolblog.mvp.presenter.BlogPresenter;
 import com.xuie.coolblog.mvp.presenter.BlogPresenterImpl;
 import com.xuie.coolblog.mvp.view.BlogView;
+import com.xuie.coolblog.mvp.view.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,6 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayout.OnRefreshListener {
-    //    static final int TYPE_HOME = 0;
-    //    static final int TYPE_ANDROID = 1;
     final static String TAG = BlogFragment.class.getSimpleName();
     int type;
     LinearLayoutManager layoutManager;
@@ -58,7 +57,7 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new BlogPresenterImpl(this);
+        presenter = new BlogPresenterImpl();
         type = getArguments().getInt("type");
     }
 
@@ -67,6 +66,7 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
         ButterKnife.bind(this, view);
 
+        presenter.setView(this);
         swipeRefreshWidget.setColorSchemeResources(R.color.primary, R.color.primary_dark,
                 R.color.primary_light, R.color.accent);
         swipeRefreshWidget.setOnRefreshListener(this);
@@ -87,8 +87,7 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
     }
 
     private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-
-        private int lastVisibleItem;
+        int lastVisibleItem;
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -99,7 +98,6 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            Log.d(TAG, type + " newState:" + newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem + 1 == adapter.getItemCount()
                     && adapter.isShowFooter()) {
@@ -129,7 +127,6 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
 
     @Override
     public void addBlog(List<Blog> list) {
-        Log.d(TAG, type + " addBlog");
         swipeRefreshWidget.setRefreshing(false);
         adapter.isShowFooter(false);
         if (blogList == null)
@@ -140,18 +137,22 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
 
     @Override
     public void addBlogFail() {
-        Log.d(TAG, type + " addBlogFail");
+        swipeRefreshWidget.setRefreshing(false);
+        adapter.isShowFooter(false);
+        adapter.notifyDataSetChanged();
+        View view = getActivity() == null ? recycleView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+        Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        presenter.clearView();
     }
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, type + " onRefresh");
         if (blogList != null) {
             blogList.clear();
         }

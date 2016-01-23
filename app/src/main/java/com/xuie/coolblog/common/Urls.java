@@ -15,10 +15,10 @@ public class Urls {
     public static final String JOKE_LIST = "http://c.m.163.com/nc/article/list/T1350383429665/0-20.html";
     public static final String JOKE_ID = "T1350383429665";
     public static final String XUIE_BLOG_LIST = "http://xuie0000.com/archives/";
-
+    public static final String CSDN_SITE = "http://blog.csdn.net";
+    public static final String COOL_SITE = "http://xuie0000.com";
 
     public static final String NEW_DETAIL = HOST + "nc/article/";
-
 
     // 博客每一项的类型
     public class DEF_BLOG_ITEM_TYPE {
@@ -29,5 +29,16 @@ public class Urls {
         public static final int BOLD_TITLE = 5; // 加粗标题
         public static final int CODE = 6; // 代码
     }
+
+
+    // 图片
+    public static final String IMAGES_URL = "http://api.laifudao.com/open/tupian.json";
+
+    // 天气预报url
+    public static final String WEATHER = "http://wthrcdn.etouch.cn/weather_mini?city=";
+
+    //百度定位
+    public static final String INTERFACE_LOCATION = "http://api.map.baidu.com/geocoder";
+
 
 }

@@ -23,6 +23,7 @@ public class JokeJsonUtils {
 
     /**
      * 将获取到的json转换为新闻列表对象
+     *
      * @param res
      * @param value
      * @return
@@ -33,7 +34,7 @@ public class JokeJsonUtils {
             JsonParser parser = new JsonParser();
             JsonObject jsonObj = parser.parse(res).getAsJsonObject();
             JsonElement jsonElement = jsonObj.get(value);
-            if(jsonElement == null) {
+            if (jsonElement == null) {
                 return null;
             }
             JsonArray jsonArray = jsonElement.getAsJsonArray();
@@ -63,7 +64,7 @@ public class JokeJsonUtils {
             JsonParser parser = new JsonParser();
             JsonObject jsonObj = parser.parse(res).getAsJsonObject();
             JsonElement jsonElement = jsonObj.get(docId);
-            if(jsonElement == null) {
+            if (jsonElement == null) {
                 return null;
             }
             jokeDetailBean = JsonUtils.deserialize(jsonElement.getAsJsonObject(), JokeDetailBean.class);

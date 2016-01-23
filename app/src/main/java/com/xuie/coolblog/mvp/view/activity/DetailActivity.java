@@ -1,4 +1,4 @@
-package com.xuie.coolblog.activity;
+package com.xuie.coolblog.mvp.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,12 +20,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-/**
- * Author : lauren
- * Email  : lauren.liuling@gmail.com
- * Blog   : http://www.liuling123.com
- * Date   : 15/12/19
- */
 public class DetailActivity extends SwipeBackActivity implements DetailView {
 
     Blog blog;
@@ -49,7 +43,8 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +59,8 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
             image.setImageResource(blog.getImgId());
         }
 
-        mJokeDetailPresenter = new JokeDetailPresenterImpl(this);
+        mJokeDetailPresenter = new JokeDetailPresenterImpl();
+        mJokeDetailPresenter.setView(this);
         if (blog.getDocid() != null) {
             mJokeDetailPresenter.loadDetail(blog.getDocid());
         } else if (blog.getDate() != null) {
@@ -72,6 +68,12 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
         } else {
             mJokeDetailPresenter.loadCool(blog.getLink());
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mJokeDetailPresenter.clearView();
     }
 
     @Override

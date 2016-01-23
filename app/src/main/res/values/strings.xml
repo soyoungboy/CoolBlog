@@ -1,15 +1,26 @@
 <resources>
-    <string name="app_name">CoolBlog</string>
+    <string name="app_name">我的博客</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="blog_name">coolxuj</string>
-    <string name="type_android">Android开发</string>
-    <string name="type_home">首页</string>
+    <string name="blog_name">我的博客</string>
+    <string name="type_csdn_jsoup">CSDN</string>
+    <string name="type_csdn_web">CSDN</string>
     <string name="transition_img">transition_img</string>
-    <string name="type_other">其它</string>
-    <string name="type_joke">笑话</string>
+    <string name="type_blog">博客</string>
+    <string name="type_joke">轻松一刻</string>
+    <string name="about_me"><b>作者介绍：</b>\n<li>我是一名攻城狮，喜欢安卓，工作于安卓的攻城狮，欢迎关注我的博客-http://xuie0000.com/</li>\n<li>如有问题及交流，请发送邮箱交流-xuie0000@163.com</li></string>
+    <string name="about_app"><b>应用简介：</b>\n<li>1.用于查看许杰的技术博客</li>\n<li>2.项目练习</li></string>
+    <string name="weather">天气</string>
+    <string name="about">关于我</string>
+    <string name="image">图片</string>
+    <string name="blog">博客</string>
+
+    <string name="load_fail">加载数据失败!</string>
+    <string name="image_hit">一次只加载20条，查看更多内容请刷新哦。</string>
+    <string name="from"><b>参考:</b>\nhttps://github.com/liuling07/SimpleNews</string>
+
 </resources>
