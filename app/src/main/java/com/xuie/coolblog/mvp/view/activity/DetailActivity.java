@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xuie.coolblog.R;
 import com.xuie.coolblog.bean.Blog;
 import com.xuie.coolblog.mvp.presenter.JokeDetailPresenter;
@@ -89,5 +90,17 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
     @Override
     public void hideProgress() {
         progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

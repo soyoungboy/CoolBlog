@@ -1,7 +1,11 @@
 package com.xuie.coolblog.mvp.view.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.xuie.coolblog.R;
 import com.xuie.coolblog.mvp.presenter.MainPresenter;
 import com.xuie.coolblog.mvp.presenter.MainPresenterImpl;
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     MainPresenter mMainPresenter;
+    int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 123;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -40,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+        } else
+            setUmeng();
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.blog_name);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -52,6 +67,28 @@ public class MainActivity extends AppCompatActivity implements MainView {
         switch2Blog();
     }
 
+    private void setUmeng() {
+        UmengUpdateAgent.setDeltaUpdate(false);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        doNext(requestCode, grantResults);
+    }
+
+    private void doNext(int requestCode, int[] grantResults) {
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setUmeng();
+            } else {
+                finish();
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -60,6 +97,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
