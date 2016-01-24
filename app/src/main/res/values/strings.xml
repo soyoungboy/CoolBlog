@@ -14,7 +14,7 @@
     <string name="type_joke">轻松一刻</string>
     <string name="about_app"><b>应用%s简介：</b>\n<li>用于查看许杰的技术博客</li>\n<li>项目练习</li></string>
     <string name="about_app2"><![CDATA[<b>应用%s简介：</b><br><li>用于查看许杰的技术博客</li><br><li>项目练习</li>]]></string>
-    <string name="about_me"><b>作者介绍：</b>\n<li>我是一名攻城狮，喜欢安卓，工作于安卓的攻城狮，欢迎关注我的博客-http://xuie0000.com/</li>\n<li>如有问题及交流，请发送邮箱交流-xuie0000@163.com</li></string>
+    <string name="about_me"><b>作者介绍：</b>\n<li>我是一名攻城狮，喜欢安卓，工作于安卓的攻城狮，欢迎关注我的博客-http://xuie0000.com/</li>\n<li>如有问题及交流，发我邮箱-xuie0000@163.com</li></string>
     <string name="weather">天气</string>
     <string name="about">关于我</string>
     <string name="image">图片</string>
