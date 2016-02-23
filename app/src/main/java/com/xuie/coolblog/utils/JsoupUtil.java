@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
+public class JsoupUtil {
     // @author wwj_748
     public static List<Blog> getContent(String str) {
         List<Blog> list = new ArrayList<>();
@@ -137,11 +137,11 @@ public class Utils {
     }
 
     public static List<Blog> getMyContent(String str) {
-//        Log.d("Utils", "--->" + str);
+//        Log.d("JsoupUtil", "--->" + str);
 
         List<Blog> list = new ArrayList<>();
 
-        Log.d("Utils", "END");
+        Log.d("JsoupUtil", "END");
         // 获取文档内容
         Document doc = Jsoup.parse(str);
 

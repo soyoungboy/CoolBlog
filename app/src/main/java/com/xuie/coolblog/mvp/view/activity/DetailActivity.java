@@ -60,8 +60,7 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
             image.setImageResource(blog.getImgId());
         }
 
-        mJokeDetailPresenter = new JokeDetailPresenterImpl();
-        mJokeDetailPresenter.setView(this);
+        mJokeDetailPresenter = new JokeDetailPresenterImpl(this);
         if (blog.getDocid() != null) {
             mJokeDetailPresenter.loadDetail(blog.getDocid());
         } else if (blog.getDate() != null) {
@@ -69,12 +68,6 @@ public class DetailActivity extends SwipeBackActivity implements DetailView {
         } else {
             mJokeDetailPresenter.loadCool(blog.getLink());
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mJokeDetailPresenter.clearView();
     }
 
     @Override

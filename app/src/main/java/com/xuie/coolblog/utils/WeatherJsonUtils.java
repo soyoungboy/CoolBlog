@@ -23,9 +23,6 @@ public class WeatherJsonUtils {
 
     /**
      * 从定位的json字串中获取城市
-     *
-     * @param json
-     * @return
      */
     public static String getCity(String json) {
         JsonParser parser = new JsonParser();

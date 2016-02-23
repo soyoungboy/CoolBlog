@@ -12,24 +12,24 @@ import com.xuie.coolblog.utils.ToolsUtil;
 import java.util.List;
 
 public class WeatherPresenterImpl implements WeatherPresenter, WeatherModelImpl.LoadWeatherListener {
+    WeatherView weatherView;
+    WeatherModel weatherModel;
+    Context context;
 
-    private WeatherView mWeatherView;
-    private WeatherModel mWeatherModel;
-    private Context mContext;
-
-    public WeatherPresenterImpl() {
-        this.mContext = App.getContext();
-        mWeatherModel = new WeatherModelImpl();
+    public WeatherPresenterImpl(WeatherView weatherView) {
+        this.weatherView = weatherView;
+        this.weatherModel = new WeatherModelImpl();
+        this.context = App.getContext();
     }
 
     @Override
     public void loadWeatherData() {
-        if (mWeatherView == null)
+        if (weatherView == null)
             return;
-        mWeatherView.showProgress();
-        if (!ToolsUtil.isNetworkAvailable(mContext)) {
-            mWeatherView.hideProgress();
-            mWeatherView.showErrorToast("无网络连接");
+        weatherView.showProgress();
+        if (!ToolsUtil.isNetworkAvailable(context)) {
+            weatherView.hideProgress();
+            weatherView.showErrorToast("无网络连接");
             return;
         }
 
@@ -37,58 +37,48 @@ public class WeatherPresenterImpl implements WeatherPresenter, WeatherModelImpl.
             @Override
             public void onSuccess(String cityName) {
                 //定位成功，获取定位城市天气预报
-                if (mWeatherView == null)
+                if (weatherView == null)
                     return;
-                mWeatherView.setCity(cityName);
-                mWeatherModel.loadWeatherData(cityName, WeatherPresenterImpl.this);
+                weatherView.setCity(cityName);
+                weatherModel.loadWeatherData(cityName, WeatherPresenterImpl.this);
             }
 
             @Override
             public void onFailure(Exception e) {
-                if (mWeatherView == null)
+                if (weatherView == null)
                     return;
-                mWeatherView.showErrorToast("定位失败");
-                mWeatherView.setCity("深圳");
-                mWeatherModel.loadWeatherData("深圳", WeatherPresenterImpl.this);
+                weatherView.showErrorToast("定位失败");
+                weatherView.setCity("深圳");
+                weatherModel.loadWeatherData("深圳", WeatherPresenterImpl.this);
             }
         };
         //获取定位信息
-        mWeatherModel.loadLocation(mContext, listener);
-    }
-
-    @Override
-    public void setView(WeatherView view) {
-        mWeatherView = view;
-    }
-
-    @Override
-    public void clearView() {
-        mWeatherView = null;
+        weatherModel.loadLocation(context, listener);
     }
 
     @Override
     public void onSuccess(List<WeatherBean> list) {
-        if (mWeatherView == null)
+        if (weatherView == null)
             return;
         if (list != null && list.size() > 0) {
             WeatherBean todayWeather = list.remove(0);
-            mWeatherView.setToday(todayWeather.getDate());
-            mWeatherView.setTemperature(todayWeather.getTemperature());
-            mWeatherView.setWeather(todayWeather.getWeather());
-            mWeatherView.setWind(todayWeather.getWind());
-            mWeatherView.setWeatherImage(todayWeather.getImageRes());
+            weatherView.setToday(todayWeather.getDate());
+            weatherView.setTemperature(todayWeather.getTemperature());
+            weatherView.setWeather(todayWeather.getWeather());
+            weatherView.setWind(todayWeather.getWind());
+            weatherView.setWeatherImage(todayWeather.getImageRes());
         }
-        mWeatherView.setWeatherData(list);
-        mWeatherView.hideProgress();
-        mWeatherView.showWeatherLayout();
+        weatherView.setWeatherData(list);
+        weatherView.hideProgress();
+        weatherView.showWeatherLayout();
     }
 
     @Override
     public void onFailure(Exception e) {
-        if (mWeatherView == null)
+        if (weatherView == null)
             return;
-        mWeatherView.hideProgress();
-        mWeatherView.showErrorToast("获取天气数据失败");
+        weatherView.hideProgress();
+        weatherView.showErrorToast("获取天气数据失败");
     }
 
 }

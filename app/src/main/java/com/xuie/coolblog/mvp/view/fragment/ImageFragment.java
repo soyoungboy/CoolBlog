@@ -32,20 +32,20 @@ import butterknife.ButterKnife;
 public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = ImageFragment.class.getSimpleName();
 
-    private LinearLayoutManager mLayoutManager;
-    private ImageAdapter mAdapter;
-    private List<ImageBean> mData;
-    private ImagePresenter mPresenter;
+    LinearLayoutManager layoutManager;
+    ImageAdapter adapter;
+    List<ImageBean> beanList;
+    ImagePresenter imagePresenter;
 
     @Bind(R.id.recycle_view)
     RecyclerView recycleView;
-    @Bind(R.id.swipe_refresh_widget)
-    SwipeRefreshLayout swipeRefreshWidget;
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new ImagePresenterImpl();
+        imagePresenter = new ImagePresenterImpl(this);
     }
 
     @Nullable
@@ -53,18 +53,20 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image, container, false);
         ButterKnife.bind(this, view);
-        mPresenter.setView(this);
-        swipeRefreshWidget.setColorSchemeResources(R.color.primary,
-                R.color.primary_dark, R.color.primary_light, R.color.accent);
-        swipeRefreshWidget.setOnRefreshListener(this);
+        swipeRefresh.setColorSchemeResources(
+                R.color.primary,
+                R.color.primary_dark,
+                R.color.primary_light,
+                R.color.accent);
+        swipeRefresh.setOnRefreshListener(this);
 
         recycleView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        recycleView.setLayoutManager(mLayoutManager);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recycleView.setLayoutManager(layoutManager);
 
         recycleView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new ImageAdapter(getActivity().getApplicationContext());
-        recycleView.setAdapter(mAdapter);
+        adapter = new ImageAdapter(getActivity().getApplicationContext());
+        recycleView.setAdapter(adapter);
         recycleView.addOnScrollListener(mOnScrollListener);
         onRefresh();
         return view;
@@ -73,26 +75,15 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPresenter.clearView();
         ButterKnife.unbind(this);
     }
 
-
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
-
-        private int lastVisibleItem;
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-        }
-
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 == mAdapter.getItemCount()) {
+                    && layoutManager.findLastVisibleItemPosition() + 1 == adapter.getItemCount()) {
                 //加载更多
                 Snackbar.make(getActivity().findViewById(R.id.drawer_layout),
                         getString(R.string.image_hit), Snackbar.LENGTH_SHORT).show();
@@ -102,19 +93,19 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void onRefresh() {
-        if (mData != null) {
-            mData.clear();
+        if (beanList != null) {
+            beanList.clear();
         }
-        mPresenter.loadImageList();
+        imagePresenter.loadImageList();
     }
 
     @Override
     public void addImages(List<ImageBean> list) {
-        if (mData == null) {
-            mData = new ArrayList<>();
+        if (beanList == null) {
+            beanList = new ArrayList<>();
         }
-        mData.addAll(list);
-        mAdapter.setmDate(mData);
+        beanList.addAll(list);
+        adapter.setmDate(beanList);
     }
 
     @Override
@@ -125,12 +116,12 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void showProgress() {
-        swipeRefreshWidget.setRefreshing(true);
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
     public void hideProgress() {
-        swipeRefreshWidget.setRefreshing(false);
+        swipeRefresh.setRefreshing(false);
     }
 }
 

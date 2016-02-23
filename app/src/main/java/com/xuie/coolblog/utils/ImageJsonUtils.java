@@ -16,14 +16,10 @@ import java.util.List;
  * Date   : 15/12/23
  */
 public class ImageJsonUtils {
-
-    private final static String TAG = "ImageJsonUtils";
+    public final static String TAG = "ImageJsonUtils";
 
     /**
      * 将获取到的json转换为图片列表对象
-     *
-     * @param res
-     * @return
      */
     public static List<ImageBean> readJsonImageBeans(String res) {
         List<ImageBean> beans = new ArrayList<ImageBean>();

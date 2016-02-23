@@ -35,22 +35,24 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayout.OnRefreshListener {
-    final static String TAG = BlogFragment.class.getSimpleName();
+    public static final String TAG = BlogFragment.class.getSimpleName();
+    public static final String TYPE = "type";
+
     int type;
     LinearLayoutManager layoutManager;
     List<Blog> blogList;
     BlogAdapter adapter;
-    BlogPresenter presenter;
+    BlogPresenter blogPresenter;
 
     @Bind(R.id.recycle_view)
     RecyclerView recycleView;
-    @Bind(R.id.swipe_refresh_widget)
-    SwipeRefreshLayout swipeRefreshWidget;
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
 
     public static BlogFragment newInstance(int type) {
         Bundle args = new Bundle();
         BlogFragment fragment = new BlogFragment();
-        args.putInt("type", type);
+        args.putInt(TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,8 +60,8 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new BlogPresenterImpl();
-        type = getArguments().getInt("type");
+        blogPresenter = new BlogPresenterImpl(this);
+        type = getArguments().getInt(TYPE);
     }
 
     @Override
@@ -67,10 +69,12 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         View view = inflater.inflate(R.layout.fragment_blog, container, false);
         ButterKnife.bind(this, view);
 
-        presenter.setView(this);
-        swipeRefreshWidget.setColorSchemeResources(R.color.primary, R.color.primary_dark,
-                R.color.primary_light, R.color.accent);
-        swipeRefreshWidget.setOnRefreshListener(this);
+        swipeRefresh.setColorSchemeResources(
+                R.color.primary,
+                R.color.primary_dark,
+                R.color.primary_light,
+                R.color.accent);
+        swipeRefresh.setOnRefreshListener(this);
 
         recycleView = (RecyclerView) view.findViewById(R.id.recycle_view);
         recycleView.setHasFixedSize(true);
@@ -88,24 +92,16 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
     }
 
     private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        int lastVisibleItem;
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-        }
-
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 == adapter.getItemCount()
+                    && layoutManager.findLastVisibleItemPosition() + 1 == adapter.getItemCount()
                     && adapter.isShowFooter()) {
                 //加载更多
                 Log.d(TAG, type + " load more...");
-//                presenter.loadJoke(type, pageIndex + Urls.PA_ZE_SIZE);
-                presenter.loadBlog(type);
+//                blogPresenter.loadJoke(type, pageIndex + Urls.PA_ZE_SIZE);
+                blogPresenter.loadBlog(type);
             }
         }
     };
@@ -115,26 +111,25 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         public void onItemClick(View view, int position) {
             Blog blog = adapter.getItem(position);
 
-            if (type == 0 || type == 3) {
+            if (type == 0 || type == 2) {
                 WebActivity.newIntent(blog.getLink());
-                return;
+            } else if (type == 1) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("blog", blog);
+
+                View transitionView = view.findViewById(R.id.img);
+                ActivityOptionsCompat options =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                                transitionView, getString(R.string.transition_img));
+                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
             }
-
-            Intent intent = new Intent(getActivity(), DetailActivity.class);
-            intent.putExtra("blog", blog);
-
-            View transitionView = view.findViewById(R.id.img);
-            ActivityOptionsCompat options =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-                            transitionView, getString(R.string.transition_img));
-            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
         }
     };
 
 
     @Override
     public void addBlog(List<Blog> list) {
-        swipeRefreshWidget.setRefreshing(false);
+        swipeRefresh.setRefreshing(false);
         adapter.isShowFooter(false);
         if (blogList == null)
             blogList = new ArrayList<>();
@@ -144,7 +139,7 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
 
     @Override
     public void addBlogFail() {
-        swipeRefreshWidget.setRefreshing(false);
+        swipeRefresh.setRefreshing(false);
         adapter.isShowFooter(false);
         adapter.notifyDataSetChanged();
         View view = getActivity() == null ? recycleView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
@@ -155,7 +150,6 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        presenter.clearView();
     }
 
     @Override
@@ -163,6 +157,6 @@ public class BlogFragment extends Fragment implements BlogView, SwipeRefreshLayo
         if (blogList != null) {
             blogList.clear();
         }
-        presenter.loadBlog(type);
+        blogPresenter.loadBlog(type);
     }
 }

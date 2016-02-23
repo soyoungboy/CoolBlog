@@ -14,8 +14,6 @@ public class ImageModelImpl implements ImageModel {
 
     /**
      * 获取图片列表
-     *
-     * @param listener
      */
     @Override
     public void loadImageList(final OnLoadImageListListener listener) {

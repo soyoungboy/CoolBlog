@@ -23,10 +23,9 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
-    static final int TYPE_CSDN_WEB = 0;
-    static final int TYPE_CSDN_JSOUP = 1;
-    static final int TYPE_JOKE = 2;
-    static final int TYPE_OTHER = 3;
+    public static final int TYPE_WEB = 0;
+    public static final int TYPE_JOKE = 1;
+    public static final int TYPE_9TH = 2;
 
     @Bind(R.id.tab_layout)
     TabLayout tabLayout;
@@ -42,7 +41,6 @@ public class MainFragment extends Fragment {
         viewpager.setOffscreenPageLimit(3);
         setupViewPager(viewpager);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.type_csdn_web));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.type_csdn_jsoup));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.type_joke));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.type_blog));
         tabLayout.setupWithViewPager(viewpager);
@@ -52,14 +50,13 @@ public class MainFragment extends Fragment {
     private void setupViewPager(ViewPager viewpager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(BlogFragment.newInstance(TYPE_CSDN_WEB), getString(R.string.type_csdn_web));
-        adapter.addFragment(BlogFragment.newInstance(TYPE_CSDN_JSOUP), getString(R.string.type_csdn_jsoup));
+        adapter.addFragment(BlogFragment.newInstance(TYPE_WEB), getString(R.string.type_csdn_web));
         adapter.addFragment(BlogFragment.newInstance(TYPE_JOKE), getString(R.string.type_joke));
-        adapter.addFragment(BlogFragment.newInstance(TYPE_OTHER), getString(R.string.type_blog));
+        adapter.addFragment(BlogFragment.newInstance(TYPE_9TH), getString(R.string.type_blog));
         viewpager.setAdapter(adapter);
     }
 
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
+    class MyPagerAdapter extends FragmentPagerAdapter {
         final List<Fragment> fragments = new ArrayList<>();
         final List<String> fragmentTitles = new ArrayList<>();
 

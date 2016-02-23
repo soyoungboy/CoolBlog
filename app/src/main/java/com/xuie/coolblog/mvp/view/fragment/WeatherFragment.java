@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class WeatherFragment extends Fragment implements WeatherView {
-    WeatherPresenter mWeatherPresenter;
+    WeatherPresenter weatherPresenter;
 
     @Bind(R.id.city)
     TextView city;
@@ -55,15 +55,14 @@ public class WeatherFragment extends Fragment implements WeatherView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWeatherPresenter = new WeatherPresenterImpl();
+        weatherPresenter = new WeatherPresenterImpl(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, view);
-        mWeatherPresenter.setView(this);
-        mWeatherPresenter.loadWeatherData();
+        weatherPresenter.loadWeatherData();
         return view;
     }
 
@@ -114,7 +113,7 @@ public class WeatherFragment extends Fragment implements WeatherView {
 
     @Override
     public void setWeatherData(List<WeatherBean> lists) {
-        List<View> adapterList = new ArrayList<View>();
+        List<View> adapterList = new ArrayList<>();
         for (WeatherBean weatherBean : lists) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_weather, null, false);
             TextView dateTV = (TextView) view.findViewById(R.id.date);
@@ -142,7 +141,6 @@ public class WeatherFragment extends Fragment implements WeatherView {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        mWeatherPresenter.clearView();
     }
 }
 

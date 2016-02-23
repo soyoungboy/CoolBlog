@@ -6,55 +6,46 @@ import com.xuie.coolblog.mvp.model.BlogModelImpl;
 import com.xuie.coolblog.mvp.view.DetailView;
 
 public class JokeDetailPresenterImpl implements JokeDetailPresenter, BlogModelImpl.OnLoadDetailListener {
-    private DetailView view;
-    private BlogModel model;
+    private DetailView detailView;
+    private BlogModel blogModel;
 
-    public JokeDetailPresenterImpl() {
-        model = new BlogModelImpl();
+    public JokeDetailPresenterImpl(DetailView detailView) {
+        this.detailView = detailView;
+        this.blogModel = new BlogModelImpl();
     }
 
     @Override
-    public void loadDetail(final String docId) {
-        view.showProgress();
-        model.loadDetail(docId, this);
+    public void loadDetail(String docId) {
+        detailView.showProgress();
+        blogModel.loadDetail(docId, this);
     }
 
     @Override
     public void loadLink(String link) {
-        view.showProgress();
-        model.loadLink(link, this);
+        detailView.showProgress();
+        blogModel.loadLink(link, this);
     }
 
     @Override
     public void loadCool(String link) {
-        view.showProgress();
-        model.loadCool(link, this);
-    }
-
-    @Override
-    public void setView(DetailView view) {
-        this.view = view;
-    }
-
-    @Override
-    public void clearView() {
-        view = null;
+        detailView.showProgress();
+        blogModel.loadCool(link, this);
     }
 
     @Override
     public void onSuccess(JokeDetailBean jokeDetailBean) {
-        if (view == null)
+        if (detailView == null)
             return;
         if (jokeDetailBean != null) {
-            view.showDetailContent(jokeDetailBean.getBody());
+            detailView.showDetailContent(jokeDetailBean.getBody());
         }
-        view.hideProgress();
+        detailView.hideProgress();
     }
 
     @Override
     public void onFailure(String msg, Exception e) {
-        if (view == null)
+        if (detailView == null)
             return;
-        view.hideProgress();
+        detailView.hideProgress();
     }
 }

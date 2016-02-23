@@ -23,10 +23,6 @@ public class JokeJsonUtils {
 
     /**
      * 将获取到的json转换为新闻列表对象
-     *
-     * @param res
-     * @param value
-     * @return
      */
     public static List<JokeBean> readJsonJokeBeans(String res, String value) {
         List<JokeBean> beans = new ArrayList<JokeBean>();

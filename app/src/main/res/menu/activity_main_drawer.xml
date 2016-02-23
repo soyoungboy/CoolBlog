@@ -3,19 +3,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_blog"
-            android:icon="@mipmap/ic_invert_colors"
+            android:icon="@mipmap/ic_invert_colors_white"
             android:title="@string/blog"/>
         <item
             android:id="@+id/nav_image"
-            android:icon="@mipmap/ic_invert_colors"
+            android:icon="@mipmap/ic_invert_colors_white"
             android:title="@string/image"/>
         <item
             android:id="@+id/nav_weather"
-            android:icon="@mipmap/ic_invert_colors"
+            android:icon="@mipmap/ic_invert_colors_white"
             android:title="@string/weather"/>
         <item
             android:id="@+id/nav_about"
-            android:icon="@mipmap/ic_invert_colors"
+            android:icon="@mipmap/ic_invert_colors_white"
             android:title="@string/about"/>
     </group>
 </menu>

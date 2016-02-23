@@ -8,43 +8,33 @@ import com.xuie.coolblog.mvp.view.ImageView;
 import java.util.List;
 
 public class ImagePresenterImpl implements ImagePresenter, ImageModelImpl.OnLoadImageListListener {
+    ImageModel imageModel;
+    ImageView imageView;
 
-    private ImageModel mImageModel;
-    private ImageView mImageView;
-
-    public ImagePresenterImpl() {
-        this.mImageModel = new ImageModelImpl();
+    public ImagePresenterImpl(ImageView imageView) {
+        this.imageView = imageView;
+        this.imageModel = new ImageModelImpl();
     }
 
     @Override
     public void loadImageList() {
-        mImageView.showProgress();
-        mImageModel.loadImageList(this);
-    }
-
-    @Override
-    public void setView(ImageView view) {
-        mImageView = view;
-    }
-
-    @Override
-    public void clearView() {
-        mImageView = null;
+        imageView.showProgress();
+        imageModel.loadImageList(this);
     }
 
     @Override
     public void onSuccess(List<ImageBean> list) {
-        if (mImageView == null)
+        if (imageView == null)
             return;
-        mImageView.addImages(list);
-        mImageView.hideProgress();
+        imageView.addImages(list);
+        imageView.hideProgress();
     }
 
     @Override
     public void onFailure(Exception e) {
-        if (mImageView == null)
+        if (imageView == null)
             return;
-        mImageView.hideProgress();
-        mImageView.showLoadFailMsg();
+        imageView.hideProgress();
+        imageView.showLoadFailMsg();
     }
 }

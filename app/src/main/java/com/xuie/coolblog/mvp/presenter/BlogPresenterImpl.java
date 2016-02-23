@@ -12,21 +12,12 @@ import java.util.List;
  * Created by xuie on 15-12-28.
  */
 public class BlogPresenterImpl implements BlogPresenter, BlogModelImpl.OnListener {
-    BlogModel model;
-    BlogView view;
+    BlogView blogView;
+    BlogModel blogModel;
 
-    @Override
-    public void setView(BlogView view) {
-        this.view = view;
-    }
-
-    @Override
-    public void clearView() {
-        this.view = null;
-    }
-
-    public BlogPresenterImpl() {
-        this.model = new BlogModelImpl();
+    public BlogPresenterImpl(BlogView blogView) {
+        this.blogView = blogView;
+        this.blogModel = new BlogModelImpl();
     }
 
     @Override
@@ -40,29 +31,26 @@ public class BlogPresenterImpl implements BlogPresenter, BlogModelImpl.OnListene
             case 0:
             default:
                 url = Urls.CSDN_HOME_LIST;
-                model.load(url, this);
-                return;
-            case 1:
-                url = Urls.CSDN_ANDROID_LIST;
                 break;
-            case 2:
+            case 1:
                 url = Urls.JOKE_LIST;
                 break;
-            case 3:
+            case 2:
                 url = Urls.XUIE_BLOG_LIST;
+                break;
         }
-        model.load(url, type, this);
+        blogModel.load(url, type, this);
     }
 
     @Override
     public void onSuccess(List<Blog> list) {
-        if (view != null)
-            view.addBlog(list);
+        if (blogView != null)
+            blogView.addBlog(list);
     }
 
     @Override
     public void onFailure(Exception e) {
-        if (view != null)
-            view.addBlogFail();
+        if (blogView != null)
+            blogView.addBlogFail();
     }
 }

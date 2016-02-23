@@ -15,3 +15,30 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepattributes Signature
+
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+-keep public class * extends com.umeng.**
+-dontwarn com.umeng.**
+-keep class com.umeng.** { *; }
+
+# OkHttp
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.squareup.okhttp.** { *; }
+-dontwarn okio.**
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+-keep public class * extends android.os.Binder
+-keep class com.zhy.http.okhttp.** { *; }
+
+
+

@@ -13,26 +13,22 @@ import android.net.NetworkInfo;
  */
 public class ToolsUtil {
 
-    public static final int getHeightInPx(Context context) {
-        final int height = context.getResources().getDisplayMetrics().heightPixels;
-        return height;
+    public static int getHeightInPx(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
     }
 
-    public static final int getWidthInPx(Context context) {
-        final int width = context.getResources().getDisplayMetrics().widthPixels;
-        return width;
+    public static int getWidthInPx(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
     }
 
-    public static final int getHeightInDp(Context context) {
+    public static int getHeightInDp(Context context) {
         final float height = context.getResources().getDisplayMetrics().heightPixels;
-        int heightInDp = px2dip(context, height);
-        return heightInDp;
+        return px2dip(context, height);
     }
 
-    public static final int getWidthInDp(Context context) {
+    public static int getWidthInDp(Context context) {
         final float width = context.getResources().getDisplayMetrics().widthPixels;
-        int widthInDp = px2dip(context, width);
-        return widthInDp;
+        return px2dip(context, width);
     }
 
     public static int dip2px(Context context, float dpValue) {
@@ -57,9 +53,6 @@ public class ToolsUtil {
 
     /**
      * 获得状态栏的高度
-     *
-     * @param context
-     * @return
      */
     public static int getStatusHeight(Context context) {
 
@@ -78,9 +71,6 @@ public class ToolsUtil {
 
     /**
      * 判断网络是否可用
-     *
-     * @param context
-     * @return
      */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -90,8 +80,8 @@ public class ToolsUtil {
             //则可以使用 cm.getActiveNetworkInfo().isAvailable();
             NetworkInfo[] info = cm.getAllNetworkInfo();
             if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                for (NetworkInfo i : info) {
+                    if (i.getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
                 }
